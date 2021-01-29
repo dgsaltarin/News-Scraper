@@ -7,7 +7,7 @@ from requests.models import Response
 
 XPATH_LINK_TO_ARTICLE = '//h3[@class = "title-container"]//a[@class = "title page-link" and starts-with(@href,"/")]/@href'
 XPATH_TITLE = '//h1[@class = "titulo"]/text()'
-XPATH_RESUME = '//div[@class="lead"]/p/text()'
+XPATH_SUMMARY = '//div[@class="lead"]/p/text()'
 XPATH_BODY = '//div[@class="modulos"]/p[@class = "contenido"]/text()'
 HOME_URL = 'https://www.eltiempo.com'
 
@@ -24,7 +24,7 @@ def parse_notice(link, today):
                 #elimina caracteres que puedan generar conflicto en el nombre del archivo
                 title = title.replace('\"', '')
                 title = title.replace('/', '')
-                resume = parsed.xpath(XPATH_RESUME)[0]
+                summary = parsed.xpath(XPATH_SUMMARY)[0]
                 body = parsed.xpath(XPATH_BODY)
             except IndexError:
                 return
@@ -32,7 +32,7 @@ def parse_notice(link, today):
             with open(f'{today}/{title}.txt', 'w', encoding='utf-8') as f:
                 f.write(title)
                 f.write('\n\n')
-                f.write(resume)
+                f.write(summary)
                 f.write('\n\n')
                 for p in body:
                     f.write(p)
